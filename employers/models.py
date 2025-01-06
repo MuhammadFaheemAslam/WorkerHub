@@ -33,7 +33,7 @@ class EmployerProfile(models.Model):
 
 
 class Follower(models.Model):
-    employer = models.ForeignKey(EmployerProfile, on_delete=models.CASCADE, related_name='follower_employer')  # Changed related_name here
+    employer = models.ForeignKey(EmployerProfile, on_delete=models.CASCADE, related_name='follower_employer')  
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     followed_on = models.DateTimeField(auto_now_add=True)
 
@@ -107,6 +107,16 @@ class JobPosting(models.Model):
         elif self.salary_max:
             return f"Up to ${self.salary_max}"
         return "Not specified"
+
+
+# class Notification(models.Model):
+#     recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notifications')
+#     message = models.CharField(max_length=255)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     is_read = models.BooleanField(default=False)
+
+#     def __str__(self):
+#         return f"Notification for {self.recipient.username}: {self.message}"
 
 
 

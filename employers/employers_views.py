@@ -97,18 +97,41 @@ def list_jobs(request):
     employer_profile = get_object_or_404(EmployerProfile, user=request.user)
     jobs = JobPosting.objects.filter(employer=employer_profile)
     
-    # Get the count of applications for each job
-    # for job in jobs:
-    #     job.application_count = JobApplication.objects.filter(job_posting=job).count()
-    
-    
     context ={
         'jobs': jobs,
         'emp_profile':   employer_profile 
     }
     return render(request, 'employer/job_post/job_list.html', context)
 
+    
+@login_required
+def all_job_listings(request):
+    emp_profile = get_object_or_404(EmployerProfile, user=request.user)
+    # Fetch all jobs posted across all employers (not filtered by logged-in employer)
+    jobs = JobPosting.objects.all()
 
+    context ={
+        'jobs': jobs,
+        'emp_profile': emp_profile 
+    }
+
+    return render(request, 'employer/job_post/all_job_list.html', context)
+
+# function for all other user to see the employer profile
+
+def employers_profile(request, employer_id):
+    profile = get_object_or_404(EmployerProfile, user=request.user)
+    employers_profile = get_object_or_404(EmployerProfile, pk=employer_id)
+    job_postings = JobPosting.objects.filter(employer=employers_profile)
+    is_following = employers_profile.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+
+    context = {
+        'emp_profile': profile,
+        'employers_profile':employers_profile,
+        'job_postings': job_postings,
+        'is_following': is_following,  # Add is_following to context
+    }
+    return render(request, 'employer/employer_profile.html', context)
 
 @login_required
 def view_applications(request, job_id):
@@ -124,44 +147,47 @@ def view_applications(request, job_id):
     return render(request, 'employer/applicants/view_applications.html', context)
 
 
-# function for all other user to see the employer profile
-
-def employer_profile(request, employer_id):
-    employer_profile = get_object_or_404(EmployerProfile, pk=employer_id)
-    job_postings = JobPosting.objects.filter(employer=employer_profile)
-    
-    # Check if the user is following the employer
-    is_following = employer_profile.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
-
-    context = {
-        'emp_profile': employer_profile,
-        'job_postings': job_postings,
-        'is_following': is_following,  # Add is_following to context
-    }
-    return render(request, 'employer/employer_profile.html', context)
-
-
-
+@login_required
 def follow_employer(request, employer_id):
-    if request.user.is_authenticated:
-        # Get the employer profile
-        emp_profile = get_object_or_404(EmployerProfile, id=employer_id)
+    # Get the employer profile
+    emp_profile = get_object_or_404(EmployerProfile, id=employer_id)
+    
+    # Ensure the employer can't follow their own profile
+    if request.user != emp_profile.user:
         if request.user not in emp_profile.followers.all():
             emp_profile.followers.add(request.user)
-        return redirect('employer_profile', employer_id=emp_profile.id)
-    else:
-        return redirect('login')
+    
+    # Redirect back to the employer profile page
+    return redirect('employers_profile', employer_id=emp_profile.id)
 
-
+@login_required
 def unfollow_employer(request, employer_id):
-    if request.user.is_authenticated:
-        emp_profile = get_object_or_404(EmployerProfile, id=employer_id)
-        
-        if request.user in emp_profile.followers.all():
+    # Get the employer profile
+    emp_profile = get_object_or_404(EmployerProfile, id=employer_id)
+    
+    # Ensure the employer can't unfollow their own profile
+    if request.user != emp_profile.user:
+        if request.user in emp_profile.followers.all(): 
             emp_profile.followers.remove(request.user)
 
-        # Redirect back to the employer profile page
-        return redirect('employer_profile', employer_id=emp_profile.id)
-    else:
-        # If the user is not authenticated, redirect them to login page
-        return redirect('login')
+    # Redirect back to the employer profile page
+    return redirect('employers_profile', employer_id=emp_profile.id)
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def view_followers(request):
+    emp_profile = get_object_or_404(EmployerProfile, user=request.user)
+    followers = emp_profile.followers.all()
+    
+    context = {
+        'emp_profile': emp_profile,
+        'followers': followers
+    }
+    
+    print(followers)
+
+    return render(request, 'employer/followers_list.html', context)
+

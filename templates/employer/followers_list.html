@@ -1,0 +1,27 @@
+{% extends 'core/employer/base.html' %}
+{% block title %}Followers{% endblock %}
+
+{% block content %}
+
+
+
+<h1>Followers of {{ emp_profile.company_name }}</h1>
+
+    {% if followers %}
+        <ul>
+            {% for follower in followers %}
+                <li>
+                    <strong>Username:</strong> {{ follower.username }} <br>
+                    <strong>Name:</strong> {{ follower.first_name }}{{ follower.last_name }} <br>
+                    {% if follower.profile %}
+                        <strong>Profile:</strong> <a href="{{ follower.profile.url }}">View Profile</a>
+                    {% else %}
+                        <strong>Profile:</strong> Not available
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No followers yet.</p>
+    {% endif %}
+{% endblock %}

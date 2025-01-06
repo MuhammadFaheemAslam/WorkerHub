@@ -1,0 +1,82 @@
+{% extends 'core/employer/base.html' %}
+{% block title %}All Jobs {% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card border-0 shadow">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>All Jobs</h2>
+                </div>
+                <div class="card-body">
+                    {% if jobs %}
+                    <div class="list-group border-0">
+                        {% for job in jobs %}
+                        <div class="list-group-item mb-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center px-2">
+                                    {% if job.employer.user == request.user %}
+                                    <!-- If the logged-in employer is the employer of this job posting -->
+                                    <h5 class="text-primary">
+                                        <img src="{{ job.employer.company_logo.url }}" alt="{{ job.employer.company_name }} logo"
+                                            class="rounded-circle" style="width: 40px; height: 40px;">
+                                        <span class="ml-2">(You)</span>
+                                    </h5>
+                                    {% else %}
+                                    <!-- If the job posting belongs to another employer -->
+                                    <a href="{% url 'employers_profile' job.employer.id %}" class="text-decoration-none">
+                                        <h5><img src="{{ job.employer.company_logo.url }}" alt="{{ job.employer.company_name }} logo"
+                                                class="rounded-circle" style="width: 40px; height: 40px;">
+                                            <span class="ml-2">{{ job.employer.company_name }}</span>
+                                        </h5>
+                                    </a>
+                                    {% endif %}   
+                                </div>
+                            </div>
+                            <div class="px-5">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                <h4>{{ job.job_title }}</h4> <span class="badge badge-info bg-info text-dark">{{ job.job_type }}</span>
+                                </div>
+                                <p><strong>Location:</strong> {{ job.job_location }}</p>
+                                <p><strong>Salary:</strong> ${{ job.salary_min }} - ${{ job.salary_max }}</p>
+                                <p><strong>Experience Level:</strong> {{ job.experience_level }}</p>
+                            </div>
+                            <div class="mt-3" id="view-details-{{ job.id }}" >
+                                <h5>About this job</h5>
+                                <p class="px-5 text-left">{{ job.job_description|truncatewords:30 }}</p>
+                                <a href="javascript:void(0);" class="px-5" onclick="toggleJobDetails('{{ job.id }}')">View Details</a>
+                            </div>
+
+                            <!-- Job Details Section -->
+                            <div id="job-details-{{ job.id }}" class="d-none mt-3">
+                                <h5>About this job</h5>
+                                <p class="px-5 text-left">{{ job.job_description }}</p>
+                            </div>
+                        </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p>No job postings available at the moment.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    function toggleJobDetails(jobId) {
+        var jobDetails = document.getElementById('job-details-' + jobId);
+        var viewDetailsButton = document.getElementById('view-details-' + jobId);
+
+        if (jobDetails && viewDetailsButton) {
+            jobDetails.classList.toggle('d-none'); // Toggle visibility of job details
+            viewDetailsButton.style.display = 'none'; // Hide the "View Details" button after clicking
+        }
+    }
+</script>
+{% endblock %}
+{% endblock %}

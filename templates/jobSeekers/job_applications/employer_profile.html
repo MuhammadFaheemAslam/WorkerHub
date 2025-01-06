@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="profile-header bg-info-rgbs text-center text-black" style="position: relative;">
+    <!-- Background Company Picture -->
+    <div class="company-background"
+        style="background: url('{{ emp_profile.company_pictures.url }}') no-repeat center center / cover; height: 350px;">
+    </div>
+
+    <!-- Overlay -->
+    <div style="background: rgba(0, 0, 0, 0.4); position: absolute; top: 0; left: 0; width: 100%; height: 350px;"></div>
+
+    <!-- Company Logo and Name -->
+    <div class="container position-relative" style="top: -90px;">
+        <div class="d-inline-block p-4 rounded-circle bg-white shadow-lg">
+            <img src="{{ emp_profile.company_logo.url }}" alt="{{ emp_profile.company_name }}"
+                class="img-fluid rounded-circle" style="width: 140px; height: 140px; object-fit: cover;" />
+        </div>
+        <h1 class="text-shadow text-black mt-4">{{ emp_profile.company_name }}</h1>
+        <p class="text-black mb-3"><strong>Followers:</strong> {{ emp_profile.get_followers_count }}</p>
+    
+        <!-- Follow/Unfollow Button -->
+        {% if user.is_authenticated %}
+            <div class="d-flex justify-content-center mt-3">
+                {% if is_following %}
+                    <form action="{% url 'unfollow_employers' emp_profile.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning btn-lg px-4 py-2">Unfollow</button>
+                    </form>
+                {% else %}
+                    <form action="{% url 'follow_employers' emp_profile.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary btn-lg px-4 py-2">Follow</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container bg-light p-5 mb-4 rounded shadow-lg">
+    <!-- Company Details -->
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="h4 text-primary mb-3">Company Details</h3>
+            <ul class="list-unstyled">
+                <li><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> {{ emp_profile.location }}</li>
+                <li><strong><i class="fas fa-envelope"></i> Contact Email:</strong> <a href="mailto:{{ emp_profile.contact_email }}">{{ emp_profile.contact_email }}</a></li>
+                <li><strong><i class="fas fa-phone"></i> Contact Phone:</strong> {{ emp_profile.contact_phone }}</li>
+                <li><strong><i class="fas fa-globe"></i> Website:</strong> <a href="{{ emp_profile.contact_website }}" target="_blank" class="text-decoration-none">{{ emp_profile.contact_website }}</a></li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3 class="h4 text-primary mb-3">About Us</h3>
+            <p>{{ emp_profile.company_description }}</p>
+        </div>
+    </div>
+
+    <!-- Job Listings -->
+    <div class="mt-5">
+        <h2 class="text-center text-shadow mb-4">Jobs </h2>
+        <div class="list-group">
+            {% for job in job_postings %}
+                <a href="{% url 'job_detail' job.id %}" class="list-group-item list-group-item-action flex-column align-items-start border-0 shadow-sm hover-shadow-lg">
+
+                    <h5 class="mb-1 text-dark">{{ job.job_title }}</h5>
+                    <small class="text-muted">{{ job.job_location }}</small> (
+                    <small class="text-muted">{{ job.formatted_salary }}</small>)
+                    
+                    <p class="mb-1">{{ job.job_description|truncatewords:20 }}</p>
+                </a>
+                <hr class="text-white">
+            {% empty %}
+                <p class="text-center text-muted">No job postings available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

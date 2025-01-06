@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils import timezone
 from .forms import JobSeekerProfileForm, WorkExperienceForm, EducationForm, SkillForm, CertificationForm, JobApplicationForm
 from .models import JobSeekerProfile, WorkExperience, Education, Skill, Certification, JobApplication
-from employers.models import JobPosting
+from employers.models import JobPosting, EmployerProfile
 
 
 @login_required
@@ -598,4 +598,43 @@ def apply_job(request, job_id):
     return render(request, 'jobSeekers/job_applications/apply_job.html', context)
 
 
+@login_required
+def employer_profile(request, employer_id):
+    profile = get_object_or_404(JobSeekerProfile, user=request.user)
+    employer_profile = get_object_or_404(EmployerProfile, pk=employer_id)
+    job_postings = JobPosting.objects.filter(employer=employer_profile)
+    is_following = employer_profile.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
 
+    context = {
+        'profile': profile,
+        'emp_profile': employer_profile,
+        'job_postings': job_postings,
+        'is_following': is_following, 
+    }
+    return render(request, 'jobSeekers/job_applications/employer_profile.html', context)
+
+
+@login_required
+def follow_employers(request, employer_id):
+    if request.user.is_authenticated:
+        # Get the employer profile
+        emp_profile = get_object_or_404(EmployerProfile, id=employer_id)
+        if request.user not in emp_profile.followers.all():
+            emp_profile.followers.add(request.user)
+        return redirect('employer_profile', employer_id=emp_profile.id)
+    else:
+        return redirect('login')
+
+@login_required
+def unfollow_employers(request, employer_id):
+    if request.user.is_authenticated:
+        emp_profile = get_object_or_404(EmployerProfile, id=employer_id)
+        
+        if request.user in emp_profile.followers.all():
+            emp_profile.followers.remove(request.user)
+
+        # Redirect back to the employer profile page
+        return redirect('employer_profile', employer_id=emp_profile.id)
+    else:
+        # If the user is not authenticated, redirect them to login page
+        return redirect('login')

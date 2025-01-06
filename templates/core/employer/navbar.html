@@ -31,7 +31,7 @@
                 </a>
             </div>
             <div class="nav-item mx-2">
-                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="{% url 'view_followers' %}">
                     <i class="fa-solid fa-users fa-lg mb-3"><span
                             class="badge bg-danger position-absolute top-0 start-10 translate-middle rounded-circle">
                             3
@@ -42,11 +42,18 @@
 
                 </a>
             </div>
-            <div class="nav-item mx-2">
-                <a class="nav-link d-flex flex-column align-items-center position-relative" href="{% url 'list_jobs' %}">
+            <div class="nav-item mx-2 dropdown">
+                <a class="nav-link  d-flex flex-column align-items-center" href="#" id="profileDropdown" 
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-briefcase fa-lg mb-3"></i>
-                    <span class="small d-none d-lg-block">Jobs</span>
+                    <span class="small d-none d-lg-block px-1">Jobs<span class="dropdown-toggle"></span> </span>
                 </a>
+                
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="{% url 'all_job_listings' %}">All Jobs</a></li>
+                    <li><a class="dropdown-item" href="{% url 'list_jobs' %}" >Your Jobs</a></li>
+                    
+                </ul>
             </div>
             <div class="nav-item mx-2">
                 <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
