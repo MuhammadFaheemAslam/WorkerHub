@@ -1,0 +1,136 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Profile - Worker Hub{% endblock %}
+
+{% block content %}
+<!-- Profile Header -->
+<div class="static-layout">
+    <div class="container-fluid bg-light">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                    <label for="profile_picture_input">
+                        <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}https://via.placeholder.com/120{% endif %}"
+                            alt="Profile Picture" class="img-fluid mb-3" style="cursor: pointer;">
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
+                    <p class="mb-1">{{ profile.headline }}</p>
+                    <p class="text-muted">{{ profile.location }}</p>
+                    <button class="btn btn-primary btn-sm me-2">Open to</button>
+                    <a href="{% url 'contact_info' %}">Contact Info</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'edit_profile' %}">{{ work_experiences.company_name }}</a>
+                </div>
+                <div class="col-md-2 text-center fs-4">
+                    <a href="{% url 'edit_profile' %}">
+                        <i id="pencil" class="fa-solid fa-pencil p-3 rounded-circle"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-4 ">
+        <div class="row d-flex justify-content-center">
+            <!-- Middle Column -->
+            <div class="col-md-11">
+                <!-- Work Experience -->
+                <div class="card mb-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-3">Experience</h5>
+                            <div class="px-3 fs-4">
+                                <a href="{% url 'add_work_experience' %}?next={% url 'view_profile' %}" class="text-primary"> <i id="pencil" class="fa-sharp p-3 fa-regular fa-plus rounded-circle"></i></a>
+                                {% if work_experiences %}
+                                    <a href="{% url 'edit_allwork_experience' %}" class="text-primary"><i id="pencil" class="fa-sharp p-3 fa-solid fa-pencil rounded-circle"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% for experience in work_experiences %}
+                        <div class="px-4">
+                            <h6>{{ experience.role }}</h6>
+                            <p class="mb-1">{{ experience.company_name }}. <span class="mx-2">{{ experience.emplyoment_type }}</span></p>
+                            <p class="text-muted mb-1">{{ experience.start_date }} - {{ experience.end_date|default:"Present" }}</p>
+                            <p class="text-muted mb-1">{{ experience.location }} . <span class="mx-2">{{experience.location_type}}</span></p>
+                            <p class="px-5">{{ experience.description }}</p>
+                            <hr class="m-5">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="card mb-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-3">Education</h5>
+                            <div class="px-3 fs-4">
+                                <a href="{% url 'add_education' %}?next={% url 'view_profile' %}" class="text-primary"> <i id="pencil" class="fa-sharp p-3 fa-regular fa-plus rounded-circle"></i></a>
+                                {% if educations %}
+                                    <a href="{% url 'edit_alleducation' %}" class="text-primary"> <i id="pencil" class="fa-sharp p-3 fa-solid fa-pencil rounded-circle"></i> </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% for education in educations %}
+                        <div class="px-4">
+                            <h6>{{ education.school_name }}</h6>
+                            <p class="text-muted mb-1">{{ education.degree }} in {{ education.field_of_study }}</p>
+                            <p class="text-muted">{{ education.start_year }} - {{ education.end_year|default:"Present" }}</p>
+                            <hr class="m-5">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="card mb-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-3">Skills</h5>
+                            <div class="px-3 fs-4">
+                                <a href="{% url 'add_skill' %}?next={% url 'view_profile' %}" class="text-primary"><i id="pencil" class="fa-sharp p-3 fa-regular fa-plus rounded-circle"></i></a>
+                                {% if skills %}
+                                    <a href="{% url 'edit_allskills' %}" class="text-primary"> <i id="pencil" class="fa-sharp p-3 fa-solid fa-pencil rounded-circle"></i></a>   
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% for skill in skills %}
+                        <div class="d-inline-block mb-2 px-4">
+                            <span class="badge bg-primary">{{ skill.name }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="card mb-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-3">Certifications</h5>
+                            <div class="px-3 fs-4">
+                                <a href="{% url 'add_certification' %}?next={% url 'view_profile' %}" class="text-primary"><i id="pencil" class="fa-sharp p-3 fa-regular fa-plus rounded-circle"></i></a>
+                                {% if certifications %}
+                                    <a href="{% url 'edit_allcertifications' %}" class="text-primary"><i id="pencil" class="fa-sharp p-3 fa-solid fa-pencil rounded-circle"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% for certification in certifications %}
+                        <div class="px-4">
+                            <h6>{{ certification.name }}</h6>
+                            <p class="text-muted mb-1">Issued by {{ certification.issuing_organization }}</p>
+                            <p class="text-muted">Issued: {{ certification.issue_date }}{% if certification.expiration_date %}, Expires: {{ certification.expiration_date }}{% endif %}</p>
+                            <hr class="m-5">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

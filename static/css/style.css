@@ -1,0 +1,110 @@
+.main-body {
+background-color: rgb(224, 243, 241);
+overflow-x: auto;
+}
+
+.navbar-nav span {
+    font-size: 0.8rem; 
+    line-height: 1; 
+}
+
+.profile-pic-circle {
+
+    width: 200px;       
+    height: 200px;
+    border-radius: 50%; 
+    object-fit: cover; 
+    cursor: pointer;
+    background-image: url('/media/profile_images/blank-profile-picture.png');
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+}
+
+
+.profile-edit .profile-pic-upload-icon {
+    position: absolute;
+    bottom: 0;
+    left: 150px;
+    background-color:white;
+    color: rgb(50, 5, 174);
+    font-size: 20px;
+    padding: 13px;
+    border-radius: 50%;
+    border-color: blue;
+    border: 1px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.dash-profile-img {
+    background-image: url('/media/profile_images/blank-profile-picture.png');
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    background-color: rgb(231, 251, 249);
+    width: 100px;       
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;  
+    cursor: pointer;
+}
+
+
+.profile-edit  input[type="file"].d-none {
+    display: none;
+}
+
+
+
+input[type="file"].d-none {
+    display: none;
+}
+
+.profile-edit a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#pencil {
+    background-color: transparent;
+    transition: background-color 0.3s ease; 
+}
+
+#pencil:hover {
+
+    background-color: rgba(205, 203, 203, 0.5);
+}
+
+
+.static-layout {
+    width: 1000px; 
+    margin: 0 auto; 
+    overflow-x: hidden; 
+  } 
+
+
+
+.input-group input:focus {
+    outline: none; 
+    border: 2px solid rgba(0, 123, 255, 0.7); 
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2); 
+   
+}
+
+
+.input-group:focus-within {
+    border: 2px solid rgba(0, 123, 255, 0.7); 
+}
+
+
+.d-sm-none {
+    display: none;
+}
+
+.container-fluid .profile-edit{
+    background-color: white;
+}
+
+

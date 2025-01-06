@@ -1,0 +1,9 @@
+{% extends 'accounts/auth/auth_base.html' %}
+{% block title %}Account Created{% endblock %}
+{% block content %}
+<h2>Account Created!</h2>
+<p>An activation link has been sent to your email: <strong>{{ email }}</strong>. Please check your inbox to activate your account.</p>
+<p>Once your account is activated, you can <strong>log in</strong> to access your profile and start using the platform.</p>
+
+<a href="{% url 'login' %}" class="btn btn-primary mt-3">Login</a>
+{% endblock %}

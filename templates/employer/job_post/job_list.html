@@ -1,0 +1,51 @@
+{% extends 'core/employer/base.html' %}
+{% block title %}Your Jobs{% endblock %}
+{% block content %}
+<div class="container-fluid bg-light mb-5">
+    <div class="card border-0">
+        <h2 class="card-header border-0 text-center py-4">Your Job Postings</h2>
+        
+        <div class="card-body">
+            <div>
+                <a href="{% url 'create_job' %}" class="btn btn-success fs-6 p-3 mb-3">Create New Job</a>
+            </div>
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Posted On</th>
+                        <th>DeadLine</th>
+                        <th>Applications</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.job_title }}</td>
+                        <td>{{ job.job_location }}</td>
+                        <td>{{ job.job_type }}</td>
+                        <td>{{ job.posted_on|date:"Y-m-d" }}</td>
+                        <td>{{ job.application_deadline }}</td>
+                        <td>
+                            <a href="{% url 'view_applications' job.id %}" ><i class="fa-duotone fa-solid fa-eye m-2 fs-4"></i></a>
+                        </td>
+                        <td>
+                            <a href="{% url 'edit_job' job.id %}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{% url 'delete_job' job.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No jobs found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class=" mt-3 border-0 bg-light"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

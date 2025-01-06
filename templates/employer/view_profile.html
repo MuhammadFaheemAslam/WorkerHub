@@ -1,0 +1,51 @@
+{% extends 'core/employer/base.html' %}
+
+{% block content %}
+<div class="profile-header bg-light text-center" style="position: relative;">
+    <!-- Background Company Picture -->
+    <div class="company-background"
+        style="background: url('{{ emp_profile.company_pictures.url }}') no-repeat center center / cover; height: 300px;">
+    </div>
+
+    <!-- Overlay -->
+    <div style="background: rgba(0, 0, 0, 0.6); position: absolute; top: 0; left: 0; width: 100%; height: 300px;"></div>
+
+    <!-- Company Logo and Name -->
+    <div class="container position-relative" style="top: -80px;">
+        <div class="d-inline-block p-3 rounded-circle bg-white">
+            <img src="{{ emp_profile.company_logo.url }}" alt="{{ profile.company_name }}"
+                class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
+        </div>
+        <h1 class="text-shadow">{{ emp_profile.company_name }}</h1>
+        <p><strong>Followers:</strong> {{ emp_profile.get_followers_count }}</p>
+        <p class="px-5">{{ emp_profile.company_description }}</p>
+    </div>
+</div>
+<div class="container bg-light p-4 mb-3">
+    <!-- Company Details -->
+
+    <div class="row">
+        <div class="col-md-5">
+            <p><strong>Location:</strong> {{ emp_profile.location }}</p>
+            <p><strong>Contact Email:</strong> {{ emp_profile.contact_email }}</p>
+        </div>
+        <div class="col-md-5">
+            <p><strong>Contact Phone:</strong> {{ emp_profile.contact_phone }}</p>
+            <p><strong>Website:</strong>
+                <a href="{{ emp_profile.contact_website }}" target="_blank">
+                    {{ emp_profile.contact_website }}
+                </a>
+            </p>
+        </div>
+        <!-- Edit Profile Button -->
+        <div class="col-md-2">
+            <div class="text-end">
+                <a href="{% url 'edit_emp_profile' %}" class="btn btn-primary">
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+    {% endblock %}

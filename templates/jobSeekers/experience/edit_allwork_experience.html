@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit Experience{% endblock %}
+
+{% block content %}
+<div class="static-layout">
+    <div class="container-fluid ">
+        <div class="row d-flex justify-content-center">
+            <!-- Middle Column -->
+            <div class="col-md-12">
+                <!-- Work Experience -->
+                <div class="card mb-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex mb-3 justify-content-between">
+                            <h5 ><a href="{% url 'view_profile' %}"><i class="fa-sharp-duotone fa-solid fa-arrow-left rounded-circle px-3 text-decoration-none" id="pencil"></i></a> <span class="card-title mb-3">Experience Details</span></h5>
+                        </div>
+                        {% for experience in work_experiences %}
+                        <div class="px-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6>{{ experience.role }}</h6>
+                                <div class=" fs-4">
+                                    <a href="{% url 'delete_work_experience' experience.id %}" class="text-danger"><i id="pencil"
+                                            class="p-3 fa-regular fa-trash-can rounded-circle"></i></a>
+
+                                    <a href="{% url 'edit_work_experience' experience.id %}" class="text-primary"><i id="pencil"
+                                            class="p-3 fa-sharp fa-solid fa-pencil rounded-circle"></i></a>
+                                </div>
+                            </div>
+                            <p class="mb-1">{{ experience.company_name }}. <span class="mx-2">{{ experience.emplyoment_type }}</span></p>
+                            <p class="text-muted mb-1">{{ experience.start_date }} - {{ experience.end_date|default:"Present" }}</p>
+                            <p class="text-muted mb-1">{{ experience.location }} . <span class="mx-2">{{experience.location_type}}</span></p>
+                            <p class="px-5">{{ experience.description }}</p>
+                            
+                            <hr class="m-5">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

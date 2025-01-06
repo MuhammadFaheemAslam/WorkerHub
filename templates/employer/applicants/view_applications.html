@@ -1,0 +1,40 @@
+{% extends 'core/employer/base.html' %}
+{% block title %}Applications for {{ job_posting.job_title }}{% endblock %}
+{% block content %}
+<div class="container-fluid bg-light mb-5">
+    <div class="card border-0">
+        <h1 class="card-header row border-0 text-center py-4">  <a href="{% url 'list_jobs' %}" class="col-1"><i class="fa-sharp fa-solid fa-arrow-left"></i></a> Applications for {{ job_posting.job_title }}</h1>
+        <div class="card-body">
+    
+        {% if applications %}
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Applicant Name</th>
+                    <th>Email</th>
+                    <th>Resume</th>
+                    <th>Submission Date</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ app.job_seeker.get_full_name }}</td>
+                    <td>{{ app.job_seeker.email }}</td>
+                    <td><a href="{{ app.resume.url }}" target="_blank">Download Resume</a></td>
+                    <td>{{ app.applied_on|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No applications received for this job posting yet.</p>
+        {% endif %}
+       
+        <div class="card-footer mt-3 border-0"></div>
+    </div>
+</div>
+{% endblock %}

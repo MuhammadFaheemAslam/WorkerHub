@@ -1,0 +1,119 @@
+{% extends 'accounts/auth/auth_base.html' %}
+{% block title %}Register page{% endblock %}
+{% block content %}
+
+<div id="register">
+    <h2 class="fw-bold mb-5">Register</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+         <!-- Role Field (Radio Buttons) -->
+         <div class="mb-4 d-flex justify-content-evenly">
+            <!-- <label class="form-label">Role</label> -->
+            <div>
+                <input type="radio" id="job_seeker" name="role" value="job_seeker" {% if form.role.value == "job_seeker" or not form.role.value %}checked{% endif %}>
+                <label for="job_seeker">Job Seeker</label>
+            </div>
+            <div>
+                <input type="radio" id="employer" name="role" value="employer" {% if form.role.value == "employer" %}checked{% endif %}>
+                <label for="employer">Employer</label>
+            </div>
+            <div class="text-danger mt-1" style="font-size: 0.9rem;">
+                {% for error in form.role.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="mb-3">
+            <label for="id_email" class="form-label">{{ form.email.label }}</label>
+            {{ form.email }}
+            <div class="text-danger mt-1" style="font-size: 0.9rem;">
+                {% for error in form.email.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- First Name Field -->
+        <div class="mb-3" id="firstNameField">
+            <label for="id_first_name" class="form-label">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+            <div class="text-danger mt-1" style="font-size: 0.9rem;">
+                {% for error in form.first_name.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Last Name Field -->
+        <div class="mb-3" id="lastNameField">
+            <label for="id_last_name" class="form-label">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+            <div class="text-danger mt-1" style="font-size: 0.9rem;">
+                {% for error in form.last_name.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Password1 Field -->
+        <div class="mb-3">
+            <label for="id_password1" class="form-label">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            <div class="text-danger mt-1" style="font-size: 0.9rem;">
+                {% for error in form.password1.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Password2 Field -->
+        <div class="mb-3">
+            <label for="id_password2" class="form-label">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+            <div class="text-danger mt-1" style="font-size: 0.9rem;">
+                {% for error in form.password2.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary w-100 fw-bold" style="border-radius: 2rem;">Register</button>
+        </div>
+
+        <!-- Sign-In Link -->
+        <div class="mt-4 text-center">
+            <p class="text-muted">Already on WorkerHub? <a href="{% url 'login' %}">Sign in</a></p>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const roleRadioButtons = document.querySelectorAll('input[name="role"]');
+    const lastNameField = document.getElementById("lastNameField");
+
+    function toggleFields() {
+        const selectedRole = document.querySelector('input[name="role"]:checked').value;
+        if (selectedRole === "job_seeker") {
+            lastNameField.classList.remove("d-none");
+        } else if (selectedRole === "employer") {
+            lastNameField.classList.add("d-none");
+        }
+    }
+
+    // Set the default state on page load
+    toggleFields();
+
+    // Add event listeners for radio buttons
+    roleRadioButtons.forEach((radio) =>
+        radio.addEventListener("change", toggleFields)
+    );
+});
+</script>
+{% endblock %}

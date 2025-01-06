@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Contact Info{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card border-0 shadow-sm" style="width: 50rem;">
+        <div class="card-header border-0">
+            <h2>Contact Information</h2>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div class="card border-0 mb-5">
+                    <div class="card-body">
+                        <p><strong>Full Name:</strong> {{ profile.first_name }} {{ profile.last_name }}</p>
+                        <p><strong>Email:</strong> {{ profile.contact_email }}</p>
+                        <p><strong>Phone:</strong> {{ profile.contact_phone }}</p>
+                        <!-- <p><strong>Location:</strong> {{ profile.location }}</p> -->
+                        <p><strong>Website:</strong> <a href="{{ profile.contact_website }}" target="_blank">{{ profile.contact_website }}</a></p>
+                        <p><strong>GitHub:</strong> <a href="{{ profile.github_url }}" target="_blank">{{ profile.github_url }}</a></p>
+                    </div>
+                </div>
+                <!-- Buttons for editing and going back to the profile -->
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'edit_contact_info' %}" class="btn btn-primary">Edit Contact Info</a>
+                    <a href="{% url 'view_profile' %}" class="btn btn-secondary">Back to Profile</a>
+                </div>
+        </div>
+        <div class="card-footer border-0">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

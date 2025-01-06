@@ -1,0 +1,37 @@
+{% extends 'accounts/auth/auth_base.html' %}
+{% block title %}Login Page{% endblock %}
+{% block content %}
+
+<h2 class="fw-bold mb-5">Login</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email"
+            required>
+        {% if email_error %}
+        <div class="text-danger mt-1" style="font-size: 0.9rem;">{{ email_error }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+        {% if password_error %}
+        <div class="text-danger mt-1" style="font-size: 0.9rem;">{{ password_error }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <a href="{% url 'password_reset' %}">Forgot password?</a>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Keep me logged in</label>
+    </div>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary w-100 fw-bold" style="border-radius: 2rem;">Login</button>
+    </div>
+    <div class="mt-4 text-center">
+        <p class="text-muted">New to WorkerHub? <a href="{% url 'register' %}"> Join now</a></p>
+    </div>
+</form>
+{% endblock %}

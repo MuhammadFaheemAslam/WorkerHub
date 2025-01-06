@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% block title %}Apply for {{ job_posting.job_title }}{% endblock %}
+{% block content %}
+<div class="row container-fluid justify-content-center">
+    <div class="card mb-4 border-0 p-5 col-10 ">
+        <div class="card-header border-0">
+            <h1>Apply for {{ job_posting.job_title }}</h1>
+        </div>
+   
+    <p><strong>Employer:</strong> {{ job_posting.employer.company_name }}</p>
+    <p><strong>Location:</strong> {{ job_posting.job_location }}</p>
+    <p><strong>Salary:</strong> ${{ job_posting.salary_min }} - ${{ job_posting.salary_max }}</p>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary px-5">Submit</button>
+            <a href="{% url 'job_listing' %}" class="btn btn-secondary px-5"> Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

@@ -1,0 +1,147 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+    <div class="container-fluid justify-content-evenly">
+        <div class="d-flex align-items-center">
+            <!-- Brand -->
+            <a class="navbar-brand d-flex align-items-center text-decoration-none" href="#">
+                <h3 class="text-primary fw-bold m-0 me-2">Worker
+                    <span class="bg-primary text-white px-2 rounded">HUB</span>
+                </h3>
+            </a>
+
+            <!-- Search Bar (Hidden on small screens) -->
+            <form class="input-group d-none d-lg-flex ms-3 " style="max-width: 400px;">
+                <span class="input-group-text border-0 bg-white">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="search" class="form-control border-0 shadow-none" placeholder="Search">
+            </form>
+        </div>
+        <!-- Mobile Search Icon (Visible only on small screens) -->
+        <button class="btn btn-light d-block d-lg-none ms-3">
+            <i class="fas fa-search text-primary"></i>
+        </button>
+
+        <!-- Navbar Links (Visible on larger screens) -->
+        <div class="navbar-nav flex-row d-none d-lg-flex align-items-center">
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="{% url 'home' %}">
+                    <i class="fas fa-home fa-lg mb-3"></i>
+                    <span class="small d-none d-lg-block">Home</span>
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
+                    <i class="fa-solid fa-users fa-lg mb-3"><span
+                            class="badge bg-danger position-absolute top-0 start-10 translate-middle rounded-circle">
+                            3
+                        </span><!-- Badge for Network -->
+                    </i>
+                    <span class="small d-none d-lg-block">My Network</span>
+
+
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="{% url 'job_listing' %}">
+                    <i class="fa-solid fa-briefcase fa-lg mb-3"></i>
+                    <span class="small d-none d-lg-block">Jobs</span>
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
+                    <i class="fas fa-comment-dots fa-lg mb-3">
+                        <!-- Badge for Messaging -->
+                        <span class="badge bg-danger position-absolute top-0 start-10 translate-middle rounded-circle">
+                            5
+                        </span>
+                    </i>
+                    <span class="small d-none d-lg-block">Messaging</span>
+
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#"
+                    data-bs-toggle="tooltip" title="Notifications">
+                    <i class="fas fa-bell fa-lg mb-3">
+                        <!-- Badge for Notifications -->
+                        <span class="badge bg-danger position-absolute top-0 start-10 translate-middle rounded-circle">
+                            1
+                        </span>
+                    </i>
+                    <span class="small d-none d-lg-block">Notifications</span>
+
+                </a>
+            </div>
+            <div class="nav-item mx-2 dropdown">
+                <a class="nav-link  d-flex flex-column align-items-center" href="#" id="profileDropdown" 
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ profile.profile_picture.url }}" class="rounded-circle img-fluid mb-1 " style="width: 30px; height: 30px;">
+                    <span class="small d-none d-lg-block px-1">Me <span class="dropdown-toggle"></span> </span>
+                </a>
+                
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="{% url 'view_profile' %}">View Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}" >Logout</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="navbar-nav flex-row d-lg-none align-items-center">
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
+                    <i class="fas fa-home fa-lg"></i>
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
+                    <i class="fa-solid fa-users fa-lg"></i>
+                    <!-- Badge for Network (small screens) -->
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle">
+                        3
+                    </span>
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
+                    <i class="fa-solid fa-briefcase fa-lg"></i>
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#">
+                    <i class="fas fa-comment-dots fa-lg"></i>
+                    <!-- Badge for Messaging (small screens) -->
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle">
+                        5
+                    </span>
+                </a>
+            </div>
+            <div class="nav-item mx-2">
+                <a class="nav-link d-flex flex-column align-items-center position-relative" href="#"
+                    data-bs-toggle="tooltip" title="Notifications">
+                    <i class="fas fa-bell fa-lg"></i>
+                    <!-- Badge for Notifications (small screens) -->
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle">
+                        1
+                    </span>
+                </a>
+            </div>
+            <div class="nav-item mx-2 dropdown">
+                <a class="nav-link dropdown-toggle d-flex flex-column align-items-center" href="#" id="profileDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ profile.profile_picture.url }}" class="rounded-circle img-fluid mb-1 " style="width: 50px; height: 50px;">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="{% url 'view_profile' %}">View Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}" >Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Bootstrap JS (Ensure this is included for the toggler to work) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

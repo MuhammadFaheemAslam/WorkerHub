@@ -1,0 +1,30 @@
+{% extends 'accounts/auth/auth_base.html' %}
+{% block title %}Welcome to Worker Hub{% endblock %}
+{% block content %}
+
+<!-- Smaller Top Message Section -->
+<section class="py-4 bg-primary text-center text-light">
+    <div class="container">
+        <h3>Welcome to your professional community</h3>
+    </div>
+</section>
+
+<!-- Main Content Section -->
+<section class="mt-3 d-flex align-items-center justify-content-center p-4">
+    <div class="container text-center">
+        <p class="lead text-secondary mb-4">Connect with professionals, explore job opportunities, and
+            grow your career.</p>
+        <div class="d-grid gap-3 col-10 mx-auto">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg shadow-sm">
+                Login
+            </a>
+            <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg shadow-sm">
+                Register
+            </a>
+        </div>
+        <div class="mt-4 text-muted">
+            <small>Already a member? Click Login. New here? Start by creating your free account.</small>
+        </div>
+    </div>
+</section>
+{% endblock %}

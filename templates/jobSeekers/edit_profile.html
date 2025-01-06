@@ -1,0 +1,143 @@
+{% extends "core/base.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<div class="container-fluid d-flex justify-content-center mb-5">
+    <div class="card col-md-8 border-0">
+        <div class="card-header border-0">
+            <h2>Edit Your Profile</h2>
+        </div>
+        <div class="card-body p-5 profile-edit">
+            <!-- Profile Picture -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="section-title mb-3 mt-1"><strong>Profile Pic</strong></div>
+                <div class="row d-flex mb-4 justify-content-center">
+                    <div class="col-md-4 d-flex position-relative">
+                        {% if profile.profile_picture %}
+                        <div class="mt-2 position-relative">
+                            <img src="{{ profile.profile_picture.url }}" class="profile-pic-circle" id="profile_pic_display">
+                            <label for="profile_picture" class="profile-pic-upload-icon">
+                                <i class="fas fa-plus"></i>
+                            </label>
+                        </div>
+                        {% endif %}
+                        <input type="file" class="d-none" id="profile_picture" name="profile_picture">
+                    </div>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="section-title mb-3 mt-1"><strong>Basic Info</strong></div>
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ profile.first_name }}">
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ profile.last_name }}">
+                    </div>
+                </div>
+
+                <hr class="m-5">
+                <!-- Gender -->
+                <div class="section-title mb-3"><strong>Pronouns</strong></div>
+                <div class="mb-4">
+                    <label for="gender" class="form-label">Select Gender</label>
+                    <select id="gender" name="gender" class="form-control">
+                        {% for key, value in gender_choices %}
+                        <option value="{{ key }}" {% if profile.gender == key %}selected{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <hr class="m-5">
+                <!-- Headline -->
+                <div class="section-title mb-3"><strong>Headline</strong></div>
+                <div class="mb-4">
+                    <label for="headline" class="form-label">Headline</label>
+                    <input type="text" class="form-control" id="headline" name="headline" value="{{ profile.headline }}">
+                </div>
+
+                <hr class="m-5">
+                <!-- Location -->
+                <div class="section-title mb-3"><strong>Location</strong></div>
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="country" class="form-label">Country/Region</label>
+                        <input type="text" class="form-control" id="country" name="country" value="{{ profile.country }}">
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <label for="postal_code" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="postal_code" name="postal_code" value="{{ profile.postal_code }}">
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" name="city" value="{{ profile.city }}">
+                    </div>
+                </div>
+
+                <hr class="m-5">
+                <!-- Work Experience -->
+                <div class="section-title mb-3"><strong>Current Position</strong></div>
+                <div class="mb-2">
+                    <label for="current_position" class="form-label">Position</label>
+                    <input type="text" class="form-control" id="current_position" name="current_position" value="{{ profile.current_position }}" readonly>
+                </div>
+                <button type="button" class="btn btn-outline-secondary">
+                    <a href="{% url 'add_work_experience' %}?next={% url 'edit_profile' %}">+ Add Work Experience</a>
+
+                </button>
+
+                <hr class="m-5">
+                <!-- Education -->
+                <div class="section-title mb-3"><strong>Education</strong></div>
+                <div class="mb-2">
+                    <label for="education" class="form-label">Latest Education</label>
+                    <input type="text" class="form-control" id="education" name="education" value="{{ latest_education.field_of_study }}" readonly>
+                </div>
+                <button type="button" class="btn btn-outline-secondary">
+                    <!-- <a href="{% url 'add_education' %}">+ Add New Education</a> -->
+                    <a href="{% url 'add_education' %}?next={% url 'edit_profile' %}">+ Add New Education</a>
+                </button>
+
+                <hr class="m-5">
+                <!-- Skills -->
+                <div class="section-title mb-3"><strong>Skills</strong></div>
+                <div class="card mb-2">
+                    <div class="card-body">
+                        {% for skill in skills %}
+                        <span class="badge bg-primary me-2">{{ skill.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-secondary">
+                    <a href="{% url 'add_skill' %}?next={% url 'edit_profile' %}">+ Add New Skill</a>
+                </button>
+
+                <hr class="m-5">
+                <!-- Certifications -->
+                <div class="section-title mb-3"><strong>Certifications</strong></div>
+                <div class="card mb-2">
+                    <div class="card-body">
+                        {% for certificate in certificates %}
+                        <span class="badge bg-primary me-2">{{ certificate.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-secondary mb-5">
+                    <a href="{% url 'add_certification' %}?next={% url 'edit_profile' %}">+ Add New Certification</a>
+                </button>
+
+                <!-- Save Button -->
+                <div class="d-flex justify-content-between mb-3">
+                    <button type="submit" class="btn btn-primary col-2">Save</button>
+                    <a href="{% url 'view_profile' %}" class="btn-secondary btn text-white col-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+        <!-- Save Button -->
+        <div class="card-footer border-0">
+        </div>
+    </div>
+</div>
+{% endblock %}

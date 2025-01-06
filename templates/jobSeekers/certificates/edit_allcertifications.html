@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Profile - Worker Hub{% endblock %}
+
+{% block content %}
+<div class="static-layout">
+    <div class="container-fluid ">
+        <div class="row d-flex justify-content-center">
+            <!-- Middle Column -->
+            <div class="col-md-12">
+                <!-- Work Experience -->
+                <div class="card mb-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex mb-3 justify-content-between">
+                            <h5><a href="{% url 'view_profile' %}"><i
+                                        class="fa-sharp-duotone fa-solid fa-arrow-left rounded-circle px-3 text-decoration-none"
+                                        id="pencil"></i></a> <span class="card-title mb-3">Certification
+                                    Information</span></h5>
+                        </div>
+
+                        <!-- Education -->
+                        <div class="card mb-4 border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-3">Certificates</h5>
+                                </div>
+                                {% for certification in certifications %}
+                                <div class="px-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6>{{ certification.name }}</h6>
+                                        <div class="px-3 fs-4">
+                                            <a href="{% url 'delete_certification' certification.id %}"
+                                                class="text-danger"><i id="pencil"
+                                                    class="p-3 fa-regular fa-trash-can rounded-circle"></i></a>
+
+                                            <a href="{% url 'edit_certification' certification.id %}"
+                                                class="text-primary"><i id="pencil"
+                                                    class="p-3 fa-sharp fa-solid fa-pencil rounded-circle"></i></a>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mb-1">{{ certification.issuing_organization }}</p>
+                                    <p class="text-muted">{{ certification.issue_date }} - {{ certification.expiration_date }}</p>
+                                    <hr class="m-5">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

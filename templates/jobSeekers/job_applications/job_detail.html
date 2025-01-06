@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+{% block title %}Job detail{% endblock %}
+{% block content %}
+<div class="row container-fluid justify-content-center">
+    <div class="card mb-4 border-0 p-5 col-10 ">
+        <h4 class=""><img src="{{ job_posting.employer.company_logo.url }}"
+                alt="{{ job_posting.employer.company_name }} logo" class="rounded-circle"
+                style="width: 40px; height: 40px;"> <span>{{job_posting.employer.company_name }}</span></h4>
+        <div class="card-header border-0">
+            <h1>{{ job_posting.job_title }}</h1>
+            
+        </div>
+        <div class="card-body">
+            <p><strong>Poeple applied: </strong><span class="badge badge-info bg-info">{{ application_count }}</span></p>
+            <p><strong>Location:</strong> {{ job_posting.job_location }}</p>
+            <p><strong>Job Type:</strong> {{ job_posting.job_type }} (<span>{{ job_posting.location_type }}</span>)</p>
+            <p><strong>Salary:</strong> ${{ job_posting.salary_min }} - ${{ job_posting.salary_max }}</p>
+            <p><strong>Experience Level:</strong> {{ job_posting.experience_level }}</p>
+            <p><strong>Application Deadline:</strong> {{ job_posting.application_deadline }}</p>
+            <p><strong>About the job</strong></p>
+            <p class="px-4">{{ job_posting.job_description }}</p>
+
+            <div class="d-flex justify-content-between mt-3">
+                {% if has_applied %}
+                    <button class="btn btn-secondary px-5" disabled>Applied</button>
+                {% else %}
+                    <a href="{% url 'apply_job' job_posting.id %}" class="btn btn-primary px-5">Apply</a>
+                {% endif %}
+                <a href="{% url 'job_listing' %}" class="btn btn-secondary px-5">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

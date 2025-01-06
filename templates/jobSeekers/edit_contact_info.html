@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit Contact Info - Worker Hub{% endblock %}
+
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card border-0 shadow-sm" style="width: 50rem;">
+        <div class="card-header border-0">
+            <h2>Edit Contact Information</h2>
+        </div>
+        <div class="card-body px-5">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="contact_email" class="form-label">Email Address</label>
+                    <!-- <input type="email" class="form-control" id="contact_email" name="contact_email" value="{{ profile.contact_email }}" required> -->
+                    {{ profile.contact_email }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="contact_phone" class="form-label">Phone Number</label>
+                    <!-- <input type="text" class="form-control" id="contact_phone" name="contact_phone" value="{{ profile.contact_phone }}" required> -->
+                    {{ profile.contact_phone }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="contact_website" class="form-label">Website URL</label>
+                    <!-- <input type="url" class="form-control" id="contact_website" name="contact_website" value="{{ profile.contact_website }}"> -->
+                    {{ profile.contact_website }}
+                </div>
+
+                <div class="mb-5">
+                    <label for="github_url" class="form-label">GitHub URL</label>
+                    <!-- <input type="url" class="form-control" id="github_url" name="github_url" value="{{ profile.github_url }}"> -->
+                    {{ profile.github_url }}
+                </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="{% url 'view_profile' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer border-0">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

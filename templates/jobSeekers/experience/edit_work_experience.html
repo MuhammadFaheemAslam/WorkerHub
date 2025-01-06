@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% block title %}Edit Experience{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card border-0" style="width: 50rem;">
+        <div class="card-header border-0 ">
+            <h2>Edit Work Experience</h2>
+        </div>
+        <div class="card-body p-5">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex mt-5 justify-content-between">
+                    <button type="submit" class="btn btn-primary col-2">Update</button>
+                    <a href="{% url 'edit_allwork_experience' %}" class="btn btn-secondary col-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer border-0 ">
+        </div>
+    </div>
+</div>
+{% endblock %}
