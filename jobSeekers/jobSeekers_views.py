@@ -5,7 +5,7 @@ from django.db import IntegrityError
 from urllib.parse import urlencode
 from django.urls import reverse
 from django.utils import timezone
-from .forms import JobSeekerProfileForm, WorkExperienceForm, EducationForm, SkillForm, CertificationForm, JobApplicationForm
+from .forms import JobSeekerProfileForm, WorkExperienceForm, EducationForm, SkillForm, CertificationForm, JobApplicationForm, ContactInfoForm
 from .models import JobSeekerProfile, WorkExperience, Education, Skill, Certification, JobApplication
 from employers.models import JobPosting, EmployerProfile
 
@@ -103,7 +103,7 @@ def add_work_experience(request):
         if work_experience_form.is_valid():
             try:
                 work_experience = work_experience_form.save(commit=False)
-                work_experience.profile = profile
+                work_experience.job_seeker_profile = profile
                 
                 start_date = work_experience_form.cleaned_data['start_date']
                 end_date = work_experience_form.cleaned_data['end_date']
@@ -154,7 +154,7 @@ def edit_allwork_experience(request):
 @login_required
 def edit_work_experience(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    work_experience = get_object_or_404(WorkExperience, pk=pk, profile__user=request.user)
+    work_experience = get_object_or_404(WorkExperience, pk=pk, job_seeker_profile__user=request.user)
     
     if request.method == 'POST':
         work_experience_form = WorkExperienceForm(request.POST, instance=work_experience)
@@ -188,7 +188,7 @@ def edit_work_experience(request, pk):
 @login_required
 def delete_work_experience(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    work_experience = get_object_or_404(WorkExperience, pk=pk, profile__user=request.user)
+    work_experience = get_object_or_404(WorkExperience, pk=pk, job_seeker_profile__user=request.user)
     
     if request.method == 'POST':
         work_experience.delete()
@@ -214,7 +214,7 @@ def add_education(request):
         try:
             if form.is_valid():
                 education = form.save(commit=False)
-                education.profile = profile
+                education.job_seeker_profile = profile
                 start_year = form.cleaned_data['start_year']
                 end_year = form.cleaned_data['end_year']
                 if end_year and start_year > end_year:
@@ -255,7 +255,7 @@ def edit_alleducation(request):
 # Edit Education
 def edit_education(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    education = get_object_or_404(Education, pk=pk, profile__user=request.user)
+    education = get_object_or_404(Education, pk=pk, job_seeker_profile__user=request.user)
     
     if request.method == 'POST':
         form = EducationForm(request.POST, instance=education)
@@ -283,7 +283,7 @@ def edit_education(request, pk):
 @login_required
 def delete_education(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    education = get_object_or_404(Education, pk=pk, profile__user=request.user)
+    education = get_object_or_404(Education, pk=pk, job_seeker_profile__user=request.user)
     if request.method == "POST":
         education.delete()
         messages.success(request, "Education deleted successfully.")
@@ -318,7 +318,7 @@ def add_skill(request):
             else:
                 #if skill not exist save it
                 skill = skill_form.save(commit=False)
-                skill.profile = profile
+                skill.job_seeker_profile = profile
                 skill.save()
                 messages.success(request, 'Skill added successfully.')
                 
@@ -353,7 +353,7 @@ def edit_allskills(request):
 @login_required
 def edit_skill(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    skill = get_object_or_404(Skill, pk=pk, profile__user=request.user)
+    skill = get_object_or_404(Skill, pk=pk, job_seeker_profile__user=request.user)
     if request.method == "POST":
         skill_name = request.POST.get('name')
         skill.name = skill_name
@@ -372,7 +372,7 @@ def edit_skill(request, pk):
 @login_required
 def delete_skill(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    skill = get_object_or_404(Skill, pk=pk, profile__user=request.user)
+    skill = get_object_or_404(Skill, pk=pk, job_seeker_profile__user=request.user)
     if request.method == "POST":
         skill.delete()
         messages.success(request, "Skill deleted successfully.")
@@ -400,7 +400,7 @@ def add_certification(request):
         try:   
             if certification_form.is_valid():
                 certification = certification_form.save(commit=False)
-                certification.profile = profile
+                certification.job_seeker_profile = profile
                 
                 issue_date = certification_form.cleaned_data['issue_date']
                 expire_date = certification_form.cleaned_data['expiration_date']
@@ -437,14 +437,14 @@ def edit_allcertifications(request):
         'certifications': certifications
     }
     
-    return render(request, 'profiles/certificates/edit_allcertifications.html', context)
+    return render(request, 'jobSeekers/certificates/edit_allcertifications.html', context)
 
 
 # Edit Certification
 @login_required
 def edit_certification(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    certification = get_object_or_404(Certification, pk=pk, profile__user=request.user)
+    certification = get_object_or_404(Certification, pk=pk, job_seeker_profile__user=request.user)
     
     if request.method == "POST":
         form = CertificationForm(request.POST, instance=certification)
@@ -473,7 +473,7 @@ def edit_certification(request, pk):
 @login_required
 def delete_certification(request, pk):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    certification = get_object_or_404(Certification, pk=pk, profile__user=request.user)
+    certification = get_object_or_404(Certification, pk=pk, job_seeker_profile__user=request.user)
     if request.method == "POST":
         certification.delete()
         messages.success(request, "Certification deleted successfully.")
@@ -504,22 +504,22 @@ def contact_info(request):
 
 @login_required
 def edit_contact_info(request):
-    # Get or create the profile for the logged-in user
-    profile, created = JobSeekerProfile.objects.get_or_create(user=request.user)
-
+    profile_instance = get_object_or_404(JobSeekerProfile, user=request.user)
     if request.method == "POST":
-        form = JobSeekerProfileForm(request.POST, request.FILES, instance=profile)
+        form = ContactInfoForm(request.POST, request.FILES, instance=profile_instance)
         if form.is_valid():
             form.save()
             messages.success(request, "Your profile has been updated successfully.")
             return redirect("contact_info")
         else:
+            print(form.errors)
             messages.error(request, "Please correct the errors below.")
     else:
-        form = JobSeekerProfileForm(instance=profile)
+        form = ContactInfoForm(instance=profile_instance)
         
     context = {
-        'profile': form
+        'form': form,
+        'profile': profile_instance
     }
 
     return render(request, "jobSeekers/edit_contact_info.html", context)

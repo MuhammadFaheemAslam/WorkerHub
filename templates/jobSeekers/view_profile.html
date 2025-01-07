@@ -86,27 +86,6 @@
                         {% endfor %}
                     </div>
                 </div>
-
-                <!-- Skills -->
-                <div class="card mb-4 border-0">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-3">Skills</h5>
-                            <div class="px-3 fs-4">
-                                <a href="{% url 'add_skill' %}?next={% url 'view_profile' %}" class="text-primary"><i id="pencil" class="fa-sharp p-3 fa-regular fa-plus rounded-circle"></i></a>
-                                {% if skills %}
-                                    <a href="{% url 'edit_allskills' %}" class="text-primary"> <i id="pencil" class="fa-sharp p-3 fa-solid fa-pencil rounded-circle"></i></a>   
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% for skill in skills %}
-                        <div class="d-inline-block mb-2 px-4">
-                            <span class="badge bg-primary">{{ skill.name }}</span>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
                 <!-- Certifications -->
                 <div class="card mb-4 border-0">
                     <div class="card-body">
@@ -125,6 +104,25 @@
                             <p class="text-muted mb-1">Issued by {{ certification.issuing_organization }}</p>
                             <p class="text-muted">Issued: {{ certification.issue_date }}{% if certification.expiration_date %}, Expires: {{ certification.expiration_date }}{% endif %}</p>
                             <hr class="m-5">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Skills -->
+                <div class="card mb-4 border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-3">Skills</h5>
+                            <div class="px-3 fs-4">
+                                <a href="{% url 'add_skill' %}?next={% url 'view_profile' %}" class="text-primary"><i id="pencil" class="fa-sharp p-3 fa-regular fa-plus rounded-circle"></i></a>
+                                {% if skills %}
+                                    <a href="{% url 'edit_allskills' %}" class="text-primary"> <i id="pencil" class="fa-sharp p-3 fa-solid fa-pencil rounded-circle"></i></a>   
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% for skill in skills %}
+                        <div class="d-inline-block mb-2 px-4">
+                            <span class="badge bg-primary">{{ skill.name }}</span>
                         </div>
                         {% endfor %}
                     </div>

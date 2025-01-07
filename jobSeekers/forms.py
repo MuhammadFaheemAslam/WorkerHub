@@ -99,3 +99,16 @@ class JobApplicationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(JobApplicationForm, self).__init__(*args, **kwargs)
         self.fields['resume'].required = True  
+
+
+class ContactInfoForm(forms.ModelForm):
+    class Meta:
+        model = JobSeekerProfile
+        fields = ['contact_email','contact_phone', 'contact_website', 'github_url'] 
+        
+        widgets ={
+            'contact_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Contact Email'}),
+            'contact_phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contact Phone'}),
+            'contact_website': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Website URL'}),
+            'github_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'GitHub URL'}),
+        }
