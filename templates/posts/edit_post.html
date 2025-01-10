@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="row d-flex justify-content-center" id="edit_post">
+    <div class="p-3 col-md-6 rounded shadow-sm mb-4 bg-white">
+        <div class="card-header">
+            <h2 class="mb-4">Edit Post</h2>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="content" class="form-label">Post Content</label>
+                <textarea class="form-control" id="content" name="content" rows="5">{{ post.content }}</textarea>
+            </div>
+            <div class="row text-center mb-4">
+                <div class="col-4">
+                    <label for="images" class="d-block">
+                        <i class="fa-solid fa-image fs-2 text-primary" style="cursor: pointer;"></i>
+                    </label>
+                    <input class="d-none" type="file" name="images" id="images" multiple>
+                    <p class="small text-muted">Upload Images</p>
+                </div>
+                <div class="col-4">
+                    <label for="videos" class="d-block">
+                        <i class="fa-solid fa-video fs-2 text-primary" style="cursor: pointer;"></i>
+                    </label>
+                    <input class="d-none" type="file" name="videos" id="videos" multiple>
+                    <p class="small text-muted">Upload Videos</p>
+                </div>
+            </div>
+            <div class="mb-4">
+                <h5>Existing Media</h5>
+                <div class="row">
+                    {% for media in post.media.all %}
+                    <div class="col-6 text-center position-relative" id="media_{{ media.id }}">
+                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Delete" data-media-id="{{ media.id }}"></button>
+                        {% if media.media_type == 'image' %}
+                        <img src="{{ media.file.url }}" class="img-fluid rounded border mb-2" alt="Post image">
+                        {% elif media.media_type == 'video' %}
+                        <video src="{{ media.file.url }}" class="rounded border w-100 mb-2" controls></video>
+                        {% endif %}
+                        <input type="hidden" class="delete-media" name="delete_media" value="{{ media.id }}" style="display:none;">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Update Post</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

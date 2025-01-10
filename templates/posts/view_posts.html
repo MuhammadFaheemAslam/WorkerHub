@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h1>Posts</h1>
+    <a href="{% url 'create_post' %}">Create New Post</a>
+    
+    {% for post in posts %}
+        <div class="post">
+            <p>{{ post.content }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post image">
+            {% endif %}
+            {% if post.video %}
+                <video src="{{ post.video }}" controls></video>
+            {% endif %}
+            <p>Posted by {{ post.user.username }} at {{ post.created_at }}</p>
+
+            <!-- Like/Dislike -->
+            <a href="{% url 'react_to_post' post.id 1 %}">Like</a> | <a href="{% url 'react_to_post' post.id 0 %}">Dislike</a>
+            
+            <!-- Comment Form -->
+            <form method="POST" action="{% url 'comment_on_post' post.id %}">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit">Comment</button>
+            </form>
+            
+            <!-- Comments -->
+            <h3>Comments:</h3>
+            {% for comment in post.comments.all %}
+                <p>{{ comment.user.username }}: {{ comment.content }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

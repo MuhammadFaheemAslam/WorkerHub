@@ -1,18 +1,60 @@
 <div class="col-md-6">
-    <div class="bg-white p-3 rounded shadow-sm mb-4">
-        <textarea class="form-control mb-3" rows="2" placeholder="Start a post..."></textarea>
+    <div class="bg-white p-3 rounded shadow-sm mb-4" data-bs-toggle="modal" data-bs-target="#myModal">
+        <a href="#" class="text-decoration-none text-secondary">
+            <textarea class="form-control rounded mb-3" rows="2" placeholder="Share your thoughts...."></textarea>
+        </a>
+
         <button class="btn btn-primary w-100">Post</button>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- Use modal-sm for a smaller popup -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Share thoughts</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="modal-body p-5">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <textarea name="content" class="form-control" rows="5" placeholder="Write something..."
+                                    required></textarea>
+                            </div>
+                            <div class="row mt-4">
+                                <!-- Image Upload -->
+                                <div class="form-group mb-3 col-3 text-center">
+                                    <label for="images" class="icon-label">
+                                        <i class="fa-solid fa-image fs-3 text-primary"></i>
+                                        <p class="small text-muted">Upload Images</p>
+                                    </label>
+                                    
+                                    <input type="file" name="images" id="images" class="d-none" accept="image/*"
+                                        multiple>
+                                </div>
 
-    <!-- Example Post -->
-    <div class="bg-white p-3 rounded shadow-sm mb-4">
-        <div class="d-flex align-items-center mb-3">
-            <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="User Avatar">
-            <div>
-                <h6 class="m-0">Jane Smith</h6>
-                <small class="text-muted">2h ago</small>
+                                <!-- Video Upload -->
+                                <div class="form-group mb-3 col-3 text-center">
+                                    <label for="videos" class="icon-label">
+                                        <i class="fa-solid fa-video fs-3 text-primary"></i>
+                                        <p class="small text-muted">Upload Videos</p>
+                                    </label>
+                                    
+                                    <input type="file" name="videos" id="videos" class="d-none" accept="video/*"
+                                        multiple>
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary w-100 mt-4">Post</button>
+                        </form>
+
+                    </div>
+                </div>
             </div>
         </div>
-        <p>Excited to share that I’ve started a new position at XYZ Company!</p>
+
     </div>
+    {% include 'core/view_posts.html' %}
 </div>

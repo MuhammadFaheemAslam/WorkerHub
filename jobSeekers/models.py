@@ -5,6 +5,7 @@ from django.conf import settings
 from employers.models import JobPosting
 
 
+
 class JobSeekerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
@@ -108,4 +109,3 @@ class JobApplication(models.Model):
     
     def __str__(self):
         return f"Application for {self.job_posting.job_title} by {self.job_seeker.first_name}"
-

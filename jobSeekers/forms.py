@@ -112,3 +112,5 @@ class ContactInfoForm(forms.ModelForm):
             'contact_website': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Website URL'}),
             'github_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'GitHub URL'}),
         }
+        
+        

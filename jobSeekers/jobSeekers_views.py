@@ -10,6 +10,7 @@ from .models import JobSeekerProfile, WorkExperience, Education, Skill, Certific
 from employers.models import JobPosting, EmployerProfile
 
 
+
 @login_required
 def edit_profile(request):
     profile = get_object_or_404(JobSeekerProfile, user=request.user)
@@ -638,3 +639,4 @@ def unfollow_employers(request, employer_id):
     else:
         # If the user is not authenticated, redirect them to login page
         return redirect('login')
+

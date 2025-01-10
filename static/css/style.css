@@ -103,8 +103,33 @@ input[type="file"].d-none {
     display: none;
 }
 
-.container-fluid .profile-edit{
+.container-fluid .profile-edit {
     background-color: white;
-}
+  }
 
+  .post-card {
+    height: 400px;
 
+    overflow-y: auto;
+
+  }
+
+  .media-container {
+    max-height: 400px;
+
+    overflow: hidden;
+  }
+
+  .icon-label {
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .icon-label i {
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .icon-label:hover i {
+    transform: scale(1.2);
+    color: #0056b3;
+  }
