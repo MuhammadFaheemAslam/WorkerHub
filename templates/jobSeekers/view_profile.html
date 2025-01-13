@@ -17,9 +17,9 @@
                 <div class="col-md-6">
                     <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
                     <p class="mb-1">{{ profile.headline }}</p>
-                    <p class="text-muted">{{ profile.location }}</p>
+                    <p class="text-muted"><i class="fa-solid fa-location-dot me-1"></i>{{ profile.location }}</p>
                     <button class="btn btn-primary btn-sm me-2">Open to</button>
-                    <a href="{% url 'contact_info' %}">Contact Info</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Contact Info</a>
                 </div>
                 <div class="col-md-2">
                     <a href="{% url 'edit_profile' %}">{{ work_experiences.company_name }}</a>
@@ -32,6 +32,40 @@
             </div>
         </div>
     </div>
+
+ <!--Contact info details start from here-->
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Contact Information</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="card border-0 shadow-sm" style="width: 50rem;">
+                    <div class="card-body p-4">
+                            <div class="card border-0 mb-5">
+                                <div class="card-body">
+                                    <p><strong>Full Name:</strong> {{ profile.first_name }} {{ profile.last_name }}</p>
+                                    <p><strong>Email:</strong> {{ profile.contact_email }}</p>
+                                    <p><strong>Phone:</strong> {{ profile.contact_phone }}</p>
+                                    <p><strong>Website:</strong> <a href="{{ profile.contact_website }}" target="_blank">{{ profile.contact_website }}</a></p>
+                                    <p><strong>GitHub:</strong> <a href="{{ profile.github_url }}" target="_blank">{{ profile.github_url }}</a></p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'edit_contact_info' %}" class="btn btn-primary px-5">Edit  Info</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
     <!-- Main Content -->
     <div class="container my-4 ">

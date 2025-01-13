@@ -74,6 +74,19 @@ DATABASES = {
 }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.oracle',
+#         'NAME': 'prmprod',
+#         'USER': 'TCTDBS',
+#         'PASSWORD': 'TCTDBS',
+#         'HOST': 'srv-isc-db2',
+#         'PORT': 1521,  # Default is usually 1521
+#     }
+# }
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

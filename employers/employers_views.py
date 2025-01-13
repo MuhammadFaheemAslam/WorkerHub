@@ -107,7 +107,6 @@ def list_jobs(request):
 @login_required
 def all_job_listings(request):
     emp_profile = get_object_or_404(EmployerProfile, user=request.user)
-    # Fetch all jobs posted across all employers (not filtered by logged-in employer)
     jobs = JobPosting.objects.all()
 
     context ={
@@ -118,7 +117,6 @@ def all_job_listings(request):
     return render(request, 'employer/job_post/all_job_list.html', context)
 
 # function for all other user to see the employer profile
-
 def employers_profile(request, employer_id):
     profile = get_object_or_404(EmployerProfile, user=request.user)
     employers_profile = get_object_or_404(EmployerProfile, pk=employer_id)
@@ -129,9 +127,11 @@ def employers_profile(request, employer_id):
         'emp_profile': profile,
         'employers_profile':employers_profile,
         'job_postings': job_postings,
-        'is_following': is_following,  # Add is_following to context
+        'is_following': is_following,  
     }
     return render(request, 'employer/employer_profile.html', context)
+
+
 
 @login_required
 def view_applications(request, job_id):

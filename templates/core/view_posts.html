@@ -1,21 +1,30 @@
 {% for post in posts %}
 <div class="p-3 card-body rounded shadow-sm mb-4 bg-white">
     <div class="d-flex justify-content-between">
-        <div class="d-flex align-items-center mb-3">
-            <img src="{{ post.user.profile_picture.url }}" class="rounded-circle me-3" alt="Profile Picture">
-            <div>
-                <h6 class="m-0">{{ post.user.first_name }} {{ post.user.last_name }}</h6>
-                <small class="text-muted">{{ post.created_at|timesince }} ago</small>
-            </div>
-        </div>
         {% if post.user == request.user %}
-
+        <div class="d-flex align-items-center mb-3">
+            <h5 class="text-primary">(You)</h5>
+            <small class="text-muted p-2">{{ post.created_at|timesince }} ago</small>
+        </div>
         <div class="dropdown">
             <a href="#" class="text-decoration-none fs-3" id="dropdownMenuLink" data-bs-toggle="dropdown"
                 aria-expanded="false">...</a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li><a class="dropdown-item" href="{% url 'delete_post' post.id %}">Delete</a></li>
             </ul>
+        </div>
+
+        {% else %}
+        <div class="d-flex align-items-center mb-3">
+            {% if post.profile_type == 'employer' %}
+            <a href="{% url 'employers_profile' post.profile.id %}" class="text-decoration-none"><h5>{{ post.profile.company_name }}</h5></a>
+            {% else %}
+
+            <a href="{% url 'job_seeker_profile' post.profile.id %}" class="text-decoration-none">
+                <h5>{{ post.user.first_name }} {{ post.user.last_name }}</h5>
+            </a>
+            {% endif %}
+            <small class="text-muted p-2">{{ post.created_at|timesince }} ago</small>
         </div>
         {% endif %}
     </div>
@@ -63,57 +72,14 @@
         {% endif %}
     </div>
     <hr>
-
-    <!-- Like, Dislike, Share Buttons
     <div class="d-flex justify-content-between mt-3 ">
         <div class="d-flex justify-content-between ">
-            <form action="{% url 'toggle_reaction' post.id %}" method="post">
-                {% csrf_token %}
-                {% if post.user_reaction %}
-                    {% if post.user_reaction.is_like %}
-                    <button type="submit" class="btn btn-light btn-sm"><i class="bi bi-hand-thumbs-up"></i> Unlike</button>
-                    {% else %}
-                    <button type="submit" class="btn btn-light btn-sm fs-3"><i class="bi bi-hand-thumbs-up"></i> 👍</button>
-                    {% endif %}
-                {% else %}
-                <button type="submit" class="btn btn-light btn-sm fs-3"><i class="bi bi-hand-thumbs-up"></i> 👍</button>
-                {% endif %}
-            </form>
-
-            <form action="{% url 'toggle_reaction' post.id %}" method="post">
-                {% csrf_token %}
-                {% if post.user_reaction %}
-                    {% if post.user_reaction.is_like == False %}
-                    <button type="submit" class="btn btn-light btn-sm"><i class="bi bi-hand-thumbs-down"></i> Remove Dislike</button>
-                    {% else %}
-                    <button type="submit" class="btn btn-light btn-sm fs-3"><i class="bi bi-hand-thumbs-down"></i> 👎</button>
-                    {% endif %}
-                {% else %}
-                <button type="submit" class="btn btn-light btn-sm fs-3"><i class="bi bi-hand-thumbs-down"></i> 👎</button>
-                {% endif %}
-            </form>
-        </div>
-            <button class="btn btn-light btn-sm" id="commentToggle-{{ post.id }}"><i class="bi bi-chat-dots"></i> Comment</button>
-            <button class="btn btn-light btn-sm"><i class="bi bi-share"></i> Share</button>
-    </div> -->
-    <!-- Like, Dislike, Share Buttons -->
-    <div class="d-flex justify-content-between mt-3 ">
-        <div class="d-flex justify-content-between ">
-            <button class="btn btn-light btn-sm fs-3" data-action="like" data-post-id="{{ post.id }}"
+            <button class="btn btn-light btn-sm fs-5" data-action="like" data-post-id="{{ post.id }}"
                 id="like-button-{{ post.id }}">
                 {% if post.user_reaction and post.user_reaction.is_like %}
                 <i class="bi bi-hand-thumbs-up"></i> Unlike
                 {% else %}
                 <i class="bi bi-hand-thumbs-up"></i> 👍
-                {% endif %}
-            </button>
-
-            <button class="btn btn-light btn-sm fs-3" data-action="dislike" data-post-id="{{ post.id }}"
-                id="dislike-button-{{ post.id }}">
-                {% if post.user_reaction and post.user_reaction.is_like == False %}
-                <i class="bi bi-hand-thumbs-down"></i> Remove Dislike
-                {% else %}
-                <i class="bi bi-hand-thumbs-down"></i> 👎
                 {% endif %}
             </button>
         </div>
@@ -142,7 +108,6 @@
         </div>
     </div>
 
-    <!-- Modal for full-size images and videos (Show More) -->
     <div class="modal fade" id="mediaModal-{{ post.id }}" tabindex="-1" aria-labelledby="mediaModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -171,40 +136,5 @@
 </div>
 
 
-<script>
-    // AJAX request for like/dislike buttons
-    document.querySelectorAll('[data-action="like"], [data-action="dislike"]').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default form submission
-            
-            const postId = this.getAttribute('data-post-id');
-            const action = this.getAttribute('data-action');
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            fetch(`/toggle-reaction/${postId}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({ action: action, post_id: postId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const likeButton = document.getElementById(`like-button-${postId}`);
-                const dislikeButton = document.getElementById(`dislike-button-${postId}`);
-                
-                if (data.is_like) {
-                    likeButton.innerHTML = '<i class="bi bi-hand-thumbs-up"></i> Unlike';
-                    dislikeButton.innerHTML = '<i class="bi bi-hand-thumbs-down"></i> 👎';
-                } else {
-                    likeButton.innerHTML = '<i class="bi bi-hand-thumbs-up"></i> 👍';
-                    dislikeButton.innerHTML = '<i class="bi bi-hand-thumbs-down"></i> Remove Dislike';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
-</script>
 
 {% endfor %}

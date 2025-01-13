@@ -6,6 +6,7 @@ from django.contrib import messages
 from .models import Post, PostMedia, PostReaction, Comment
 from django.http import HttpResponseForbidden
 from django.http import JsonResponse
+from accounts.models import CustomUser
 
 
     
@@ -21,7 +22,6 @@ def home(request):
     for post in posts:
         post.has_reacted = post.reactions.filter(user=request.user).exists()
         post.has_liked = post.reactions.filter(user=request.user, is_like=True).exists()
-        post.has_disliked = post.reactions.filter(user=request.user, is_like=False).exists()
 
     if request.user.role == 'job_seeker':
         profile = get_object_or_404(JobSeekerProfile, user=request.user)
@@ -40,22 +40,31 @@ def home(request):
         return render(request, 'core/employer/home.html', context)
 
 
-
 @login_required
 def view_posts(request):
     posts = Post.objects.all().order_by('-created_at')
-    
+
     for post in posts:
+        # Check if the post's user has a JobSeekerProfile or EmployerProfile
+        if hasattr(post.user, 'jobseekerprofile'):
+            post.profile = post.user.jobseekerprofile
+            post.profile_type = 'job_seeker'
+        elif hasattr(post.user, 'employerprofile'):
+            post.profile = post.user.employerprofile
+            post.profile_type = 'employer'
+        else:
+            post.profile = None
+            post.profile_type = None
+
+        # Add media details if the post has media
         for media in post.media.all():
             media.file_extension = media.file.name.split('.')[-1]
-    
+
     context = {
         'posts': posts,
     }
-    
+
     return posts
-
-
 
 
 def handle_uploaded_files(post, files, media_type):
@@ -81,7 +90,7 @@ def create_post(request):
     
     
 
-
+@login_required
 def delete_post(request, post_id):    
     if request.user.role == 'job_seeker':
         profile = get_object_or_404(JobSeekerProfile, user=request.user)
@@ -103,6 +112,7 @@ def delete_post(request, post_id):
         }
     return render(request, 'posts/delete_post.html', context)
 
+@login_required
 def toggle_reaction(request, post_id):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         post = get_object_or_404(Post, id=post_id)
@@ -123,7 +133,7 @@ def toggle_reaction(request, post_id):
 
 
 
-# Handle adding comments to a post
+@login_required
 def add_comment(request, post_id):
     if request.method == "POST":
         post = get_object_or_404(Post, id=post_id)
@@ -141,7 +151,7 @@ def add_comment(request, post_id):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
-# Handle post details and display comments
+@login_required
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-created_at')
@@ -152,3 +162,26 @@ def post_detail(request, post_id):
         'comments': comments,
         'all_comments': all_comments,
     })
+
+
+
+@login_required
+def jobseeker_profile(request, pk):
+    profile = get_object_or_404(JobSeekerProfile, user=request.user)
+
+    post_user_profile = get_object_or_404(JobSeekerProfile, pk=pk)
+    work_experiences = post_user_profile.work_experiences.all().order_by('-start_date')
+    educations = post_user_profile.educations.all().order_by('-start_year')
+    skills = post_user_profile.skills.all()
+    certifications = post_user_profile.certifications.all().order_by('-issue_date')
+
+    context = {
+        'profile': profile,
+        'post_user_profile': post_user_profile,
+        'work_experiences': work_experiences,
+        'educations': educations,
+        'skills': skills,
+        'certifications': certifications,
+    }
+    return render(request, 'core/view_profileInd.html', context)
+

@@ -492,15 +492,15 @@ def delete_certification(request, pk):
 
 
 ######################################  contact info working starts from here     #################################
-@login_required
-def contact_info(request):
-    profile_instance = get_object_or_404(JobSeekerProfile, user=request.user)
+# @login_required
+# def contact_info(request):
+#     profile_instance = get_object_or_404(JobSeekerProfile, user=request.user)
 
-    context = {
-        'profile': profile_instance
-    }
+#     context = {
+#         'profile': profile_instance
+#     }
 
-    return render(request, 'jobSeekers/contact_info.html', context)
+#     return render(request, 'jobSeekers/contact_info.html', context)
 
 
 @login_required
@@ -511,7 +511,7 @@ def edit_contact_info(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your profile has been updated successfully.")
-            return redirect("contact_info")
+            return redirect("view_profile")
         else:
             print(form.errors)
             messages.error(request, "Please correct the errors below.")

@@ -14,7 +14,5 @@ urlpatterns = [
     path('employer/<int:employer_id>/follow/', views.follow_employer, name='follow_employer'),
     path('employer/<int:employer_id>/unfollow/', views.unfollow_employer, name='unfollow_employer'),
     path('followers/', views.view_followers, name='view_followers'),
-    
-
 
 ]
