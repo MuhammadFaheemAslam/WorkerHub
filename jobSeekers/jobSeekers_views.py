@@ -600,22 +600,6 @@ def apply_job(request, job_id):
 
 
 @login_required
-def employer_profile(request, employer_id):
-    profile = get_object_or_404(JobSeekerProfile, user=request.user)
-    employer_profile = get_object_or_404(EmployerProfile, pk=employer_id)
-    job_postings = JobPosting.objects.filter(employer=employer_profile)
-    is_following = employer_profile.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
-
-    context = {
-        'profile': profile,
-        'emp_profile': employer_profile,
-        'job_postings': job_postings,
-        'is_following': is_following, 
-    }
-    return render(request, 'jobSeekers/job_applications/employer_profile.html', context)
-
-
-@login_required
 def follow_employers(request, employer_id):
     if request.user.is_authenticated:
         # Get the employer profile

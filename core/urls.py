@@ -13,5 +13,6 @@ urlpatterns = [
     path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
     path('post/<int:post_id>/', views.post_detail, name='post_detail'),
     path('jobseeker/profile/<int:pk>/', views.jobseeker_profile, name='job_seeker_profile'),
+    path('profile/<int:employer_id>/', views.employers_profile, name='employers_profile'),
     
 ]

@@ -10,7 +10,6 @@ urlpatterns = [
     path('jobs/', views.list_jobs, name='list_jobs'),
     path('all-jobs/', views.all_job_listings, name='all_job_listings'),
     path('jobs/<int:job_id>/applications/', views.view_applications, name='view_applications'),
-    path('profile/<int:employer_id>/', views.employers_profile, name='employers_profile'),
     path('employer/<int:employer_id>/follow/', views.follow_employer, name='follow_employer'),
     path('employer/<int:employer_id>/unfollow/', views.unfollow_employer, name='unfollow_employer'),
     path('followers/', views.view_followers, name='view_followers'),

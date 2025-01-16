@@ -13,7 +13,7 @@
             <ul class="list-unstyled">
                 {% for job in job_postings %}
                 <li>
-                    <a href="{% url 'employer_profile' job.employer.id %}" class="text-decoration-none">
+                    <a href="{% url 'employers_profile' job.employer.id %}" class="text-decoration-none">
                     <h4><img src="{{ job.employer.company_logo.url }}" alt="{{ job.employer.company_name }} logo"
                             class="rounded-circle" style="width: 40px; height: 40px;"> <span>{{job.employer.company_name }}</span></h4>
                         </a>

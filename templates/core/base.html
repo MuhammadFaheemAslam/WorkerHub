@@ -18,7 +18,13 @@
 <body class="main-body">
   {% include 'core/messages.html' %}
 
-  {% include 'core/navbar.html' %}
+  {% if user.is_authenticated %}
+    {% if user.role == 'job_seeker' %}
+      {% include 'core/navbar.html' %}
+    {% elif user.role == 'employer' %}
+      {% include 'core/employer/navbar.html' %}
+    {% endif %}
+  {% endif %}
 
   <div class="container mt-5 pt-5">
     {% block content %}

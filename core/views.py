@@ -7,6 +7,7 @@ from .models import Post, PostMedia, PostReaction, Comment
 from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from accounts.models import CustomUser
+from jobSeekers.models import JobPosting
 
 
     
@@ -37,7 +38,7 @@ def home(request):
             'emp_profile': profile,
             'posts': posts,
         }
-        return render(request, 'core/employer/home.html', context)
+        return render(request, 'core/home.html', context)
 
 
 @login_required
@@ -167,21 +168,73 @@ def post_detail(request, post_id):
 
 @login_required
 def jobseeker_profile(request, pk):
-    profile = get_object_or_404(JobSeekerProfile, user=request.user)
+    
+    if request.user.role == 'job_seeker': 
+        profile = get_object_or_404(JobSeekerProfile, user=request.user)   
+        
+        post_user_profile = get_object_or_404(JobSeekerProfile, pk=pk)
+        work_experiences = post_user_profile.work_experiences.all().order_by('-start_date')
+        educations = post_user_profile.educations.all().order_by('-start_year')
+        skills = post_user_profile.skills.all()
+        certifications = post_user_profile.certifications.all().order_by('-issue_date')
 
-    post_user_profile = get_object_or_404(JobSeekerProfile, pk=pk)
-    work_experiences = post_user_profile.work_experiences.all().order_by('-start_date')
-    educations = post_user_profile.educations.all().order_by('-start_year')
-    skills = post_user_profile.skills.all()
-    certifications = post_user_profile.certifications.all().order_by('-issue_date')
+        context = {
+            'profile': profile,
+            'post_user_profile': post_user_profile,
+            'work_experiences': work_experiences,
+            'educations': educations,
+            'skills': skills,
+            'certifications': certifications,
+        }
 
-    context = {
-        'profile': profile,
-        'post_user_profile': post_user_profile,
-        'work_experiences': work_experiences,
-        'educations': educations,
-        'skills': skills,
-        'certifications': certifications,
-    }
-    return render(request, 'core/view_profileInd.html', context)
+    elif request.user.role == 'employer':
+        emp_profile = get_object_or_404(EmployerProfile, user=request.user)
+        
+        post_user_profile = get_object_or_404(JobSeekerProfile, pk=pk)
+        work_experiences = post_user_profile.work_experiences.all().order_by('-start_date')
+        educations = post_user_profile.educations.all().order_by('-start_year')
+        skills = post_user_profile.skills.all()
+        certifications = post_user_profile.certifications.all().order_by('-issue_date')
 
+        context = {
+            'emp_profile':emp_profile,
+            'post_user_profile': post_user_profile,
+            'work_experiences': work_experiences,
+            'educations': educations,
+            'skills': skills,
+            'certifications': certifications,
+        }
+        
+    return render(request, 'core/view_jobSeekers_profile.html', context)
+    
+    
+
+@login_required
+def employers_profile(request, employer_id):
+    if request.user.role == 'job_seeker': 
+        profile = get_object_or_404(JobSeekerProfile, user=request.user)   
+        employers_profile = get_object_or_404(EmployerProfile, pk=employer_id)
+        job_postings = JobPosting.objects.filter(employer=employers_profile)
+        is_following = employers_profile.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+
+        context = {
+            'profile': profile,
+            'employers_profile': employers_profile,
+            'job_postings': job_postings,
+            'is_following': is_following, 
+        }
+    
+    elif request.user.role == 'employer':
+        profile = get_object_or_404(EmployerProfile, user=request.user)
+        employers_profile = get_object_or_404(EmployerProfile, pk=employer_id)
+        job_postings = JobPosting.objects.filter(employer=employers_profile)
+        is_following = employers_profile.followers.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+
+        context = {
+            'emp_profile': profile,
+            'employers_profile':employers_profile,
+            'job_postings': job_postings,
+            'is_following': is_following,  
+        }
+        
+    return render(request, 'core/view_employers_profile.html', context)

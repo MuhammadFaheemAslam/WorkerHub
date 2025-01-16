@@ -2,15 +2,27 @@
     <div class="bg-white p-3 rounded shadow-sm  ">
         <div class="text-left">
             <!-- Show the profile picture if it exists -->
-            <label for="profile_picture_input">
-                <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}https://via.placeholder.com/120{% endif %}"
-                    alt="Profile Picture" class="img-fluid rounded-circle mb-3 d-profile-img"
-                    style="width: 100px; height: 100px;">
-            </label>
-            <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
-            <p class="mb-1"> {{ profile.headline|default:'' }} </p>
-            <p class="text-muted"> {{ profile.location|default:'' }} </p>
 
+            {% if user.is_authenticated %}
+                {% if user.role == 'job_seeker' %}
+                    <label for="profile_picture_input">
+                        <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}https://via.placeholder.com/120{% endif %}"
+                            alt="Profile Picture" class="img-fluid rounded-circle mb-3 d-profile-img"
+                            style="width: 100px; height: 100px;">
+                    </label>
+                    <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
+                    <p class="mb-1"> {{ profile.headline|default:'' }} </p>
+                    <p class="text-muted"> {{ profile.location|default:'' }} </p>
+                {% elif user.role == 'employer' %}
+                    <label for="profile_picture_input">
+                        <img src="{% if emp_profile.company_logo %}{{ emp_profile.company_logo.url }}{% else %}https://via.placeholder.com/120{% endif %}"
+                            alt="Profile Picture" class="img-fluid rounded-circle mb-3 d-profile-img"
+                            style="width: 100px; height: 100px;">
+                    </label>
+                    <h3>{{ emp_profile.company_name }} </h3>
+                    <p class="text-muted"> {{ emp_profile.location|default:'' }} </p>
+                {% endif %}
+            {% endif %}
         </div>
 
     </div>
