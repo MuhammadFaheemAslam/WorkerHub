@@ -26,6 +26,7 @@ The app is structured with four main Django applications: **Accounts**, **Core**
 
 - **Accounts App**:
   - User registration and authentication
+  - Email verification for Account activation
   - Secure login/logout functionality
   - Password reset and update features
   - Role-based access control for Job Seekers and Employers
@@ -49,6 +50,7 @@ The app is structured with four main Django applications: **Accounts**, **Core**
 ### **Accounts App**
 - Handles user authentication (registration, login, password reset).
 - Manages user roles (Job Seekers and Employers).
+- 
 
 ### **Core App**
 - Provides utility functions used across the project, such as base templates, middleware, etc.
