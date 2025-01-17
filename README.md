@@ -103,13 +103,13 @@ The app is structured with four main Django applications: **Accounts**, **Core**
 
 
 
-    - **Other Users Profile**:
+  - **Other Users Profile**:
     
       ![Other Users Profile](ApplicationScreens/OtherJobSeekerUserProfilePage.png "Other Users Profile Screen")
 
 
 
-    - **Upload Post**:
+  - **Upload Post**:
     
       ![Upload Post](ApplicationScreens/UploadPostPage.png "Upload Posts Screen")
 
@@ -122,24 +122,23 @@ The app is structured with four main Django applications: **Accounts**, **Core**
   - **Employer Home**:
     
       ![Employer Home](ApplicationScreens/EmployerHomePage.png "Employer Home Screen")
+
+
+
+   - **Employer Jobs Posted List**:
+    
+      ![Employer Jobs Posted List](ApplicationScreens/EmployerPostedJobListPage.png "Employer Jobs Posted List Screen")
+
+
+
+   - **Job Applications On Posts**:
+    
+      ![Job Applications](ApplicationScreens/JobApplicationViewPage.png "Job Applications Screen")
       
 
       
     
 
-### **Accounts App**
-- Handles user authentication (registration, login, password reset).
-- Manages user roles (Job Seekers and Employers).
-- 
-
-### **Core App**
-- Provides utility functions used across the project, such as base templates, middleware, etc.
-
-### **Job Seekers App**
-- Allows job seekers to manage their profiles, search other users, and interact with posts.
-
-### **Employers App**
-- Lets employers create company profiles, post jobs, and connect with job seekers.
 
 ## Installation
 
