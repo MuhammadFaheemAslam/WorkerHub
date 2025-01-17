@@ -47,6 +47,11 @@ The app is structured with four main Django applications: **Accounts**, **Core**
 
 ## Apps Overview
 
+
+- **WelCome Page**: 
+  ![Welcome Page](ApplicationScreens/WelcomePage.png "WelCome Screen")
+  
+
 ### **Accounts App**
 - Handles user authentication (registration, login, password reset).
 - Manages user roles (Job Seekers and Employers).
