@@ -56,24 +56,34 @@ The app is structured with four main Django applications: **Accounts**, **Core**
 
 - **User Registration and Authentication**:
   
-![User Registration](ApplicationScreens/RegisterPage.png "User Registration Screen")
+  ![User Registration](ApplicationScreens/RegisterPage.png "User Registration Screen")
 
 
 
 - **User Login**:
   
-![User Login](ApplicationScreens/LoginPage.png "User Login Screen")
+  ![User Login](ApplicationScreens/LoginPage.png "User Login Screen")
 
 
 - **Reset Password**:
   
-![Reset Password](ApplicationScreens/ResetPassword.png "Reset Password Screen")
+  ![Reset Password](ApplicationScreens/ResetPassword.png "Reset Password Screen")
 
 ## Job Seeker Section 
 
   - **Job Seeker HomePage**:
     
-  ![Job Seeker Home](ApplicationScreens/JobSeekersHomepage.png "JobSeeker Home Screen")
+    ![Job Seeker Home](ApplicationScreens/JobSeekersHomepage.png "JobSeeker Home Screen")
+
+
+  - **Job Seeker Self Profile**:
+    
+      ![Job Seeker Profile](ApplicationScreens/JobSeekerSelfProfilePage.png "JobSeeker Profile Screen")
+
+
+   - **Job Seeker Edit Profile**:
+    
+      ![Job Seeker Edit Profile](ApplicationScreens/JobSeekerProfileEditPage.png "JobSeeker Edit Profile Screen")
     
 
 ### **Accounts App**
